@@ -37,6 +37,7 @@ jobs:
 
   sonarQube:
     name: SonarQube Back
+    needs: backend-tests
     runs-on: ubuntu-latest
 
     steps:

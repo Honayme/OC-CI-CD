@@ -31,7 +31,7 @@ jobs:
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-coverage  # Nom mis à jour pour correspondre
+          name: frontend-coverage
           path: front/coverage
 
   sonarQube:
@@ -43,6 +43,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+
       - name: Download coverage report
         uses: actions/download-artifact@v4
         with:
@@ -50,7 +56,7 @@ jobs:
           path: front/coverage
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1  # Utilisation de la version stable v1
+        uses: SonarSource/sonarcloud-github-action@v1
         with:
           projectBaseDir: front
           args: >
@@ -62,5 +68,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
