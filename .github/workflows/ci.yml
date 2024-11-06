@@ -25,7 +25,7 @@ jobs:
         run: npm test -- --coverage
         working-directory: ./front
       - name: Upload coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: frontend-coverage
           path: front/coverage
