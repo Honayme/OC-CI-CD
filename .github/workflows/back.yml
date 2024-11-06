@@ -1,15 +1,41 @@
-name: SonarCloud Analysis
+name: CI Workflow - Back
 
 on:
   push:
     branches:
-      - main  # Changez 'main' si nécessaire
+      - main
   pull_request:
     branches:
       - main
   workflow_dispatch:
 
 jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Build and run tests with Maven
+        run: mvn clean test
+        working-directory: ./back
+
+      - name: Generate JaCoCo coverage report
+        run: mvn jacoco:report
+        working-directory: ./back
+
+      - name: Upload JaCoCo report
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: back/target/site/jacoco
+
   sonarQube:
     runs-on: ubuntu-latest
     env:
@@ -37,21 +63,4 @@ jobs:
             -Dsonar.projectKey=your_project_key_backend \
             -Dsonar.organization=your_organization_key \
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-      - name: Install dependencies (frontend)
-        run: |
-          cd frontend
-          npm install
-
-      - name: Run tests and generate coverage (frontend)
-        run: |
-          cd frontend
-          npm run test -- --code-coverage
-
-      - name: Run SonarCloud analysis (frontend)
-        run: |
-          cd frontend
-          npx sonar-scanner \
-            -Dsonar.projectKey=your_project_key_frontend \
-            -Dson
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}        

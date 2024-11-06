@@ -1,4 +1,4 @@
-name: CI Workflow
+name: CI Workflow - Front
 
 on:
   push:
@@ -34,28 +34,25 @@ jobs:
           name: frontend-coverage
           path: front/coverage
 
-  backend-tests:
+  sonarQube:
+    name: SonarCloud
+    needs: tests-front
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Build and run tests with Maven
-        run: mvn clean test
-        working-directory: ./back
-
-      - name: Generate JaCoCo coverage report
-        run: mvn jacoco:report
-        working-directory: ./back
-
-      - name: Upload JaCoCo report
-        uses: actions/upload-artifact@v4
+      - name: download coverage report
+        uses: actions/download-artifact@v3
         with:
-          name: backend-coverage
-          path: back/target/site/jacoco
+          name: coverage-report
+          path: front/coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: front
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
