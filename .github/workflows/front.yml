@@ -31,7 +31,7 @@ jobs:
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-coverage
+          name: frontend-coverage  # Nom mis à jour pour correspondre
           path: front/coverage
 
   sonarQube:
@@ -46,7 +46,7 @@ jobs:
       - name: Download coverage report
         uses: actions/download-artifact@v3
         with:
-          name: coverage-report
+          name: frontend-coverage  # Nom corrigé pour correspondre à l'upload
           path: front/coverage  # Assurez-vous que ce chemin correspond bien à l'upload
 
       - name: SonarCloud Scan
@@ -62,4 +62,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
