@@ -74,7 +74,9 @@ jobs:
           java-version: '17'
 
       - name: Verify JAVA_HOME for Java 17
-        run: echo "JAVA_HOME is set to $JAVA_HOME"
+        run: |
+          echo "JAVA_HOME is set to $JAVA_HOME"
+          java -version # Vérifie la version de Java
 
       - name: Install SonarScanner
         run: |
@@ -83,6 +85,11 @@ jobs:
           mv sonar-scanner-4.6.2.2472-linux sonar-scanner
           echo "Adding SonarScanner to PATH"
           echo "$GITHUB_WORKSPACE/sonar-scanner/bin" >> $GITHUB_PATH
+        env:
+          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
+
+      - name: Check SonarScanner version
+        run: sonar-scanner -v
 
       - name: Run SonarScanner
         run: |
