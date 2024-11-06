@@ -35,19 +35,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
+
       - name: Build and run tests with Maven
         run: mvn clean test
         working-directory: ./back
+
       - name: Generate JaCoCo coverage report
         run: mvn jacoco:report
         working-directory: ./back
+
       - name: Upload JaCoCo report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: backend-coverage
           path: back/target/site/jacoco
