@@ -1,18 +1,21 @@
-name: SonarQube Analysis
+name: SonarCloud Analysis
 
 on:
   push:
     branches:
-      - main
+      - main  # Changez 'main' si nécessaire
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   sonarQube:
     runs-on: ubuntu-latest
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,10 +30,14 @@ jobs:
           cd backend
           ./mvnw clean verify
 
-      - name: Run SonarQube analysis (backend)
+      - name: Run SonarCloud analysis (backend)
         run: |
           cd backend
-          ./mvnw sonar:sonar -Dsonar.projectKey=your_project_key_backend -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          ./mvnw sonar:sonar \
+            -Dsonar.projectKey=your_project_key_backend \
+            -Dsonar.organization=your_organization_key \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Install dependencies (frontend)
         run: |
@@ -42,13 +49,9 @@ jobs:
           cd frontend
           npm run test -- --code-coverage
 
-      - name: Run SonarQube analysis (frontend)
+      - name: Run SonarCloud analysis (frontend)
         run: |
           cd frontend
           npx sonar-scanner \
             -Dsonar.projectKey=your_project_key_frontend \
-            -Dsonar.sources=src \
-            -Dsonar.tests=src \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dson
