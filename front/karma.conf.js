@@ -47,7 +47,7 @@ module.exports = function (config) {
     browserConsoleLogOptions: {
       level: 'log'
     },
-    singleRun: false,
+    singleRun: process.env.CI === 'true', // Met singleRun à true en CI
     restartOnFileChange: true
   });
 };
