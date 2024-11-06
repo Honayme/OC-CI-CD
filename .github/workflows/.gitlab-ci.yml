@@ -81,10 +81,8 @@ jobs:
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
           unzip sonar-scanner-cli-4.6.2.2472-linux.zip
           mv sonar-scanner-4.6.2.2472-linux sonar-scanner
-          export PATH="$PATH:/github/workspace/sonar-scanner/bin"
-          export SONAR_SCANNER_OPTS="-server"
-        env:
-          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
+          echo "Adding SonarScanner to PATH"
+          echo "$GITHUB_WORKSPACE/sonar-scanner/bin" >> $GITHUB_PATH
 
       - name: Run SonarScanner
         run: |
