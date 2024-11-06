@@ -73,6 +73,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Configure JAVA_HOME to use Java 17
+        run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64" >> $GITHUB_ENV
+
       - name: Verify JAVA_HOME for Java 17
         run: |
           echo "JAVA_HOME is set to $JAVA_HOME"
@@ -85,8 +88,6 @@ jobs:
           mv sonar-scanner-4.6.2.2472-linux sonar-scanner
           echo "Adding SonarScanner to PATH"
           echo "$GITHUB_WORKSPACE/sonar-scanner/bin" >> $GITHUB_PATH
-        env:
-          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
 
       - name: Check SonarScanner version
         run: sonar-scanner -v
@@ -102,5 +103,3 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info \
             -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        env:
-          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
