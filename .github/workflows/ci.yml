@@ -25,7 +25,7 @@ jobs:
         working-directory: ./front
 
       - name: Run tests and generate coverage report
-        run: npm test -- --coverage
+        run: npm test
         working-directory: ./front
 
       - name: Upload coverage report
