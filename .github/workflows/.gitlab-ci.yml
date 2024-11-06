@@ -85,6 +85,6 @@ jobs:
             -Dsonar.java.binaries=./back/target/classes
             -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info
             -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
-            -Dsonar.log.level=DEBUG  # Active le mode de débogage
+            -Dsonar.log.level=DEBUG
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
