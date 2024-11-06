@@ -1,0 +1,54 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarQube:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11 (pour le backend Spring Boot)
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Install dependencies and run tests (backend)
+        run: |
+          cd backend
+          ./mvnw clean verify
+
+      - name: Run SonarQube analysis (backend)
+        run: |
+          cd backend
+          ./mvnw sonar:sonar -Dsonar.projectKey=your_project_key_backend -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+      - name: Install dependencies (frontend)
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run tests and generate coverage (frontend)
+        run: |
+          cd frontend
+          npm run test -- --code-coverage
+
+      - name: Run SonarQube analysis (frontend)
+        run: |
+          cd frontend
+          npx sonar-scanner \
+            -Dsonar.projectKey=your_project_key_frontend \
+            -Dsonar.sources=src \
+            -Dsonar.tests=src \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
