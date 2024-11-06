@@ -59,3 +59,20 @@ jobs:
         with:
           name: backend-coverage
           path: back/target/site/jacoco
+
+  sonarcloud-analysis:
+    runs-on: ubuntu-latest
+    needs: [ frontend-tests, backend-tests ] # Exécuter après les tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.4
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=Thomas_For_Bob_App
+            -Dsonar.organization=BobAppTeam
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
