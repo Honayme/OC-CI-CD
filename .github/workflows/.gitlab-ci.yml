@@ -96,7 +96,7 @@ jobs:
         run: |
           sonar-scanner \
             -Dsonar.projectKey=bobappteam \
-            -Dsonar.organization=BobAppTeam \
+            -Dsonar.organization=bobappteam2024 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=./back/src,./front/src \
             -Dsonar.java.binaries=./back/target/classes \
