@@ -15,7 +15,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Set up JDK 17 globally
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'zulu'  # Utilisez 'zulu' ou 'temurin' si nécessaire
+        env:
+          JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64
+          PATH: $JAVA_HOME/bin:$PATH  # Ajoutez Java 17 au PATH globalement
+
+      - name: Set up Node.js for frontend
         uses: actions/setup-node@v3
         with:
           node-version: '14'
@@ -26,13 +35,7 @@ jobs:
 
       - name: Run frontend tests and generate coverage report
         working-directory: ./front
-        run: npm test
-
-      - name: Set up JDK 17 for backend
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'zulu'
+        run: npm test -- --coverage
 
       - name: Build backend
         working-directory: ./back
@@ -48,5 +51,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64  # Redéfinir JAVA_HOME si nécessaire
+          PATH: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64/bin:$PATH
         run: |
           $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner -X
