@@ -76,19 +76,26 @@ jobs:
       - name: Verify JAVA_HOME for Java 17
         run: echo "JAVA_HOME is set to $JAVA_HOME"
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1.4
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.projectKey=bobappteam
-            -Dsonar.organization=BobAppTeam
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.sources=./back/src,./front/src
-            -Dsonar.java.binaries=./back/target/classes
-            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info
-            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
-            -Dsonar.log.level=DEBUG
+      - name: Install SonarScanner
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+          mv sonar-scanner-4.6.2.2472-linux sonar-scanner
+          export PATH="$PATH:/github/workspace/sonar-scanner/bin"
+          export SONAR_SCANNER_OPTS="-server"
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
+          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
+
+      - name: Run SonarScanner
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=bobappteam \
+            -Dsonar.organization=BobAppTeam \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.sources=./back/src,./front/src \
+            -Dsonar.java.binaries=./back/target/classes \
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info \
+            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        env:
+          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64
