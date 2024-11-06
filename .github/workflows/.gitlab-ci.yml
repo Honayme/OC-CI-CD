@@ -73,6 +73,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Set JAVA_HOME to JDK 17
+        run: echo "JAVA_HOME=$(which java)" >> $GITHUB_ENV    
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.4
         with:
