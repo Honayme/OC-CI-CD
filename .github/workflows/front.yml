@@ -46,19 +46,16 @@ jobs:
       - name: Download coverage report
         uses: actions/download-artifact@v3
         with:
-          name: frontend-coverage  # Nom corrigé pour correspondre à l'upload
-          path: front/coverage  # Assurez-vous que ce chemin correspond bien à l'upload
+          name: frontend-coverage  # Nom de l’artifact tel que défini dans le job frontend-tests
+          path: front/coverage  # Ce chemin est où l'artifact sera téléchargé
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: front
-          args: >
-            -Dsonar.projectKey=Honayme_OC-CI-CD-Front
-            -Dsonar.organization=bobappteam2024
-            -Dsonar.sources=src
-            -Dsonar.tests=src
-            -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov-report/lcov.info  # Chemin ajusté du rapport de couverture
+  
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
