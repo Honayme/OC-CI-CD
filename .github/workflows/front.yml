@@ -35,8 +35,8 @@ jobs:
           path: front/coverage
 
   sonarQube:
-    name: SonarCloud
-    needs: tests-front
+    name: sonarQube Front
+    needs: frontend-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
