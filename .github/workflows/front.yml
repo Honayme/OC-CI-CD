@@ -44,7 +44,7 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Download coverage report
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: frontend-coverage  # Nom de l’artifact tel que défini dans le job frontend-tests
           path: front/coverage  # Ce chemin est où l'artifact sera téléchargé
