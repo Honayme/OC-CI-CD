@@ -62,10 +62,16 @@ jobs:
 
   sonarcloud-analysis:
     runs-on: ubuntu-latest
-    needs: [ frontend-tests, backend-tests ] # Exécuter après les tests
+    needs: [frontend-tests, backend-tests]  # Exécuter après les tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up JDK 17 for SonarCloud
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'  # Change temporairement vers Java 17 pour SonarCloud
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.4
