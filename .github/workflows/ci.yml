@@ -26,7 +26,7 @@ jobs:
 
       - name: Run frontend tests and generate coverage report
         working-directory: ./front
-        run: npm test -- --coverage
+        run: npm test
 
       - name: Set up JDK 17 for backend
         uses: actions/setup-java@v4
