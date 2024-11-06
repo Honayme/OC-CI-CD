@@ -66,9 +66,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          PATH: $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin:$PATH  # Assure que sonar-scanner est dans le PATH
+          PATH: $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin:$PATH
         run: |
-          sonar-scanner \
+          $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner \
             -Dsonar.projectKey=Honayme_OC-CI-CD-Front \
             -Dsonar.organization=bobappteam2024 \
             -Dsonar.sources=src \
