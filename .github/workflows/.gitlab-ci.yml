@@ -65,41 +65,21 @@ jobs:
     needs: [frontend-tests, backend-tests]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17 for SonarCloud
-        uses: actions/setup-java@v3
+        uses: actions/checkout@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Configure JAVA_HOME to use Java 17
-        run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.12-7/x64" >> $GITHUB_ENV
-
-      - name: Verify JAVA_HOME for Java 17
-        run: |
-          echo "JAVA_HOME is set to $JAVA_HOME"
-          java -version # Vérifie la version de Java
-
-      - name: Install SonarScanner
-        run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-          mv sonar-scanner-4.6.2.2472-linux sonar-scanner
-          echo "Adding SonarScanner to PATH"
-          echo "$GITHUB_WORKSPACE/sonar-scanner/bin" >> $GITHUB_PATH
-
-      - name: Check SonarScanner version
-        run: sonar-scanner -v
-
-      - name: Run SonarScanner
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=bobappteam \
-            -Dsonar.organization=bobappteam2024 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.sources=./back/src,./front/src \
-            -Dsonar.java.binaries=./back/target/classes \
-            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info \
-            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=Honayme_OC-CI-CD
+            -Dsonar.organization=bobappteam2024
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.sources=./back/src,./front/src
+            -Dsonar.java.binaries=./back/target/classes
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/lcov.info
+            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
