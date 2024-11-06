@@ -1,5 +1,5 @@
 {
-  "name": "bobapp",
+  "name": "bobapfront",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
