@@ -38,8 +38,17 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
+    browsers: ['ChromeHeadless'], // Utilise Chrome en mode headless
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox'] // Ajoute le flag no-sandbox pour éviter des problèmes de permission
+      }
+    },
+    browserConsoleLogOptions: {
+      level: 'log'
+    },
+    singleRun: process.env.CI === 'true', // Met singleRun à true en CI
     restartOnFileChange: true
   });
 };
