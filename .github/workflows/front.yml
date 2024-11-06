@@ -36,26 +36,31 @@ jobs:
 
   sonarQube:
     name: SonarQube Front
-    needs: frontend-tests  # Assure que le job 'frontend-tests' a bien généré l'artifact
+    needs: frontend-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
 
       - name: Download coverage report
         uses: actions/download-artifact@v4
         with:
-          name: frontend-coverage  # Nom de l’artifact tel que défini dans le job frontend-tests
-          path: front/coverage  # Ce chemin est où l'artifact sera téléchargé
+          name: frontend-coverage
+          path: front/coverage
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@v1  # Utilisation de la version stable v1
         with:
           projectBaseDir: front
-
+          args: >
+            -Dsonar.projectKey=Honayme_OC-CI-CD-Front
+            -Dsonar.organization=bobappteam2024
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov-report/lcov.info
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
