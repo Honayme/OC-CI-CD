@@ -12,6 +12,11 @@ jobs:
   build-and-analyze:
     runs-on: ubuntu-latest
     steps:
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tar  # Installez tar si nécessaire
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -19,10 +24,10 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'zulu'  # Utilisez 'zulu' ou 'temurin' si nécessaire
+          distribution: 'zulu'
         env:
           JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64
-          PATH: $JAVA_HOME/bin:$PATH  # Ajoutez Java 17 au PATH globalement
+          PATH: $JAVA_HOME/bin:$PATH
 
       - name: Set up Node.js for frontend
         uses: actions/setup-node@v3
@@ -51,7 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64  # Redéfinir JAVA_HOME si nécessaire
+          JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64
           PATH: /opt/hostedtoolcache/Java_Zulu_jdk/17.0.13-11/x64/bin:$PATH
         run: |
           $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner -X
