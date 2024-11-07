@@ -78,8 +78,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Le token secret configuré dans GitHub
         run: |
           mvn -B -X verify org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
-            -Dsonar.projectKey=Honayme_OC-CI-CD \
-            -Dsonar.organization=bobappteam2024 \
+            -Dsonar.projectKey=Honayme_OC-CI-CD-back \
+            -Dsonar.organization=bobappteam2024-back \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
