@@ -71,7 +71,9 @@ jobs:
             -Dsonar.projectKey=Honayme_OC-CI-CD
             -Dsonar.organization=bobappteam2024
             -Dsonar.sources=./front/src
-            -Dsonar.tests=./front/src
+            -Dsonar.exclusions=**/*.spec.ts
+            -Dsonar.tests=
+            -Dsonar.test.inclusions=**/*.spec.ts
             -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov-report/lcov.info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
