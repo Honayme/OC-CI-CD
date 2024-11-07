@@ -52,6 +52,7 @@ jobs:
           java-version: 17  # Adaptez selon votre configuration
           distribution: 'zulu'
 
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
