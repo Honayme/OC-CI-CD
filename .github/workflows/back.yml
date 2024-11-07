@@ -21,6 +21,10 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Build back-end
+        run: mvn clean compile
+        working-directory: ./back
+
       - name: Build and run tests with Maven
         run: mvn clean test
         working-directory: ./back
