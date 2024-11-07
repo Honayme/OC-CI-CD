@@ -49,6 +49,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Pour un meilleur contexte d'analyse
+          ref: main            # Spécifie la branche 'main'
+          fetch-tags: true     # (Optionnel) Récupère également les tags
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
