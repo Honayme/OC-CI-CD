@@ -82,5 +82,4 @@ jobs:
             -Dsonar.organization=bobappteam2024-back \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-
-
+            -Dsonar.branch.name=${GITHUB_REF_NAME}
