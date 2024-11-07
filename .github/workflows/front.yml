@@ -70,13 +70,13 @@ jobs:
         shell: bash  # Exécution forcée avec Bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_FRONT_TOKEN }}
         run: |
           $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner -X \
-            -Dsonar.projectKey=Honayme_OC-CI-CD-Front \
-            -Dsonar.organization=bobappteam2024 \
+            -Dsonar.projectKey=orgabobteam_honayme-oc-ci-cd-front \
+            -Dsonar.organization=orgabobteam \
             -Dsonar.sources=src \
             -Dsonar.tests=src \
             -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov-report/lcov.info \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.login=${{ secrets.SONAR_FRONT_TOKEN }}
