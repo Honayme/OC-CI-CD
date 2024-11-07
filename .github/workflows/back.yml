@@ -78,9 +78,9 @@ jobs:
           args: >
             -Dsonar.projectKey=Honayme_OC-CI-CD-back
             -Dsonar.organization=bobappteam2024-back
-            -Dsonar.java.binaries=back/target/classes
+            -Dsonar.java.binaries=./back/target/classes
             -Dsonar.java.coveragePlugin=jacoco
-            -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
+            -Dsonar.coverage.jacoco.xmlReportPaths=./back/target/site/jacoco/jacoco.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Le token secret configuré dans GitHub
