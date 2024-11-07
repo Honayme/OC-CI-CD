@@ -81,6 +81,6 @@ jobs:
             -Dsonar.projectKey=Honayme_OC-CI-CD-back \
             -Dsonar.organization=bobappteam2024-back \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
 
