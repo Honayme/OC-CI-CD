@@ -86,6 +86,7 @@ jobs:
             -Dsonar.token=${SONAR_TOKEN} \
             -Dsonar.branch.name=${GITHUB_REF_NAME} \
             -Dsonar.java.binaries=target/classes
+            -Dsonar.mainBranch=main
 
   build-and-push:
     name: Build and Push Back-End Docker Image
