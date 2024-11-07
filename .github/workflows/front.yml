@@ -43,7 +43,8 @@ jobs:
     needs: frontend-tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -52,6 +53,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
+          set-java-home: true  # Assure que JAVA_HOME est défini
+
+      - name: Verify Java Version
+        run: java -version
 
       - name: Download coverage report
         uses: actions/download-artifact@v4
@@ -59,24 +64,15 @@ jobs:
           name: frontend-coverage
           path: front/coverage
 
-      - name: Install SonarScanner
-        shell: bash
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-          unzip sonar-scanner.zip -d $HOME/sonar-scanner
-          echo "$HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin" >> $GITHUB_PATH 
-
       - name: Run SonarCloud Scan
-        shell: bash  # Exécution forcée avec Bash
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.projectKey=Honayme_OC-CI-CD
+            -Dsonar.organization=bobappteam2024
+            -Dsonar.sources=./front/src
+            -Dsonar.tests=./front/src
+            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov-report/lcov.info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_FRONT_TOKEN }}
-        run: |
-          $HOME/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner -X \
-            -Dsonar.projectKey=orgabobteam_honayme-oc-ci-cd-front \
-            -Dsonar.organization=orgabobteam \
-            -Dsonar.sources=src \
-            -Dsonar.tests=src \
-            -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov-report/lcov.info \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_FRONT_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
