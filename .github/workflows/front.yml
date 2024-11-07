@@ -72,7 +72,6 @@ jobs:
             -Dsonar.organization=bobappteam2024
             -Dsonar.sources=./front/src
             -Dsonar.exclusions=**/*.spec.ts
-            -Dsonar.tests=
             -Dsonar.test.inclusions=**/*.spec.ts
             -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov-report/lcov.info
         env:
