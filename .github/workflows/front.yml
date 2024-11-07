@@ -1,4 +1,4 @@
-name: CI Workflow - Front
+name: CI Workflow
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
-          set-java-home: true  # Assure que JAVA_HOME est défini
+          set-java-home: true
 
       - name: Verify Java Version
         run: java -version
@@ -62,14 +62,6 @@ jobs:
 
       - name: Run SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.projectKey=Honayme_OC-CI-CD
-            -Dsonar.organization=bobappteam2024
-            -Dsonar.sources=./front/src/app
-            -Dsonar.exclusions=**/*.spec.ts
-            -Dsonar.test.inclusions=**/*.spec.ts
-            -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov-report/lcov.info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
